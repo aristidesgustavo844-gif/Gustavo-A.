@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gustavo Aristides — Desenvolvimento Web para negócios locais</title>
+<meta name="description" content="Gustavo Aristides de Souza — desenvolvedor web em São Paulo. Sites profissionais, rápidos e sob medida para pequenos negócios: pizzarias, clínicas e comércios.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Gustavo Aristides — Desenvolvimento Web">
+<meta property="og:description" content="Sites sob medida para negócios locais em São Paulo. Do briefing ao ar, com projetos reais entregues.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #F2E9E1;
+    --paper-alt: #FFFFFF;
+    --ink: #1C140D;
+    --ink-soft: #5B4F41;
+    --blueprint: #55631D;
+    --blueprint-deep: #1C140D;
+    --blueprint-light: #93AC5C;
+    --grid-line: rgba(28, 20, 13, 0.16);
+    --grid-line-soft: rgba(28, 20, 13, 0.08);
+    --signal: #CBE86B;
+    --signal-deep: #9CB84A;
+    --ok: #556B1D;
+
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    --maxw: 1120px;
+    --r-sm: 12px;
+    --r-md: 18px;
+    --r-lg: 28px;
+    --r-pill: 999px;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  header.nav, main, footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blueprint);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--signal);
+    display: inline-block;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(156, 184, 74,0.15);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--blueprint-deep);
+    letter-spacing: -0.015em;
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(242, 233, 225, 0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--grid-line);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .nav-mark {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-mark .dot {
+    width: 9px; height: 9px;
+    border: 1.5px solid var(--blueprint);
+    border-radius: 50%;
+    transition: transform .4s var(--ease), background .4s var(--ease);
+  }
+  .nav-mark:hover .dot { transform: scale(1.4); background: var(--signal); border-color: var(--signal); }
+  nav.links {
+    display: flex;
+    gap: 28px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  nav.links a { color: var(--ink-soft); transition: color .25s var(--ease); position: relative; padding-bottom: 3px; }
+  nav.links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1.5px;
+    background: var(--signal);
+    border-radius: var(--r-pill);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .35s var(--ease);
+  }
+  nav.links a:hover { color: var(--blueprint-deep); }
+  nav.links a:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--blueprint-deep);
+    color: var(--paper-alt);
+    padding: 10px 20px;
+    border-radius: var(--r-pill);
+    transition: background .35s var(--ease), transform .35s var(--ease), box-shadow .35s var(--ease);
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--signal); color: var(--blueprint-deep); transform: translateY(-2px); box-shadow: 0 8px 18px rgba(156, 184, 74,.4); }
+  .nav-mobile-hide { display: flex; }
+  @media (max-width: 760px) {
+    .nav-mobile-hide { display: none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 88px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+  .hero h1 {
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.06;
+    margin: 18px 0 22px;
+  }
+  .hero h1 .accent { color: var(--signal); }
+  .hero p.lead {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: 30px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    padding: 14px 24px;
+    border-radius: var(--r-pill);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease), color .35s var(--ease);
+    border: 1.5px solid transparent;
+    will-change: transform;
+  }
+  .btn-primary {
+    background: var(--signal);
+    color: var(--blueprint-deep);
+    box-shadow: 0 6px 16px rgba(156, 184, 74, 0.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 30px rgba(156, 184, 74, 0.45); }
+  .btn-primary:active { transform: translateY(-1px) scale(.99); }
+  .btn-ghost {
+    border-color: var(--blueprint);
+    color: var(--blueprint-deep);
+  }
+  .btn-ghost:hover { background: var(--blueprint); color: var(--paper-alt); transform: translateY(-3px); box-shadow: 0 12px 24px rgba(28, 20, 13,.22); }
+
+  .hero-meta {
+    margin-top: 34px;
+    display: flex;
+    gap: 26px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .hero-meta strong { color: var(--blueprint-deep); display: block; font-size: 18px; font-family: var(--font-display); }
+
+  /* blueprint hero drawing */
+  .blueprint-panel {
+    background: var(--blueprint-deep);
+    border-radius: var(--r-lg);
+    padding: 26px;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(28, 20, 13, 0.35);
+    transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+  }
+  .blueprint-panel:hover { transform: translateY(-6px); box-shadow: 0 32px 70px rgba(28, 20, 13, 0.42); }
+  .blueprint-panel svg { width: 100%; height: auto; display: block; }
+  .blueprint-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--blueprint-light);
+    letter-spacing: 0.05em;
+  }
+
+  /* cards: cantos técnicos trocados por bordas arredondadas + glow no hover */
+  .sheet {
+    position: relative;
+    border: 1px solid var(--grid-line);
+    background: var(--paper-alt);
+    border-radius: var(--r-md);
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+  }
+  .sheet:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(28, 20, 13, 0.14);
+    border-color: var(--blueprint-light);
+  }
+  .corner { display: none; }
+
+  /* ---------- SECTION SHARED ---------- */
+  section { padding: 84px 0; }
+  .section-head { max-width: 640px; margin-bottom: 48px; }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 38px); margin-top: 14px; }
+  .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 15.5px; }
+
+  /* ---------- SOBRE ---------- */
+  .sobre {
+    background: var(--paper-alt);
+    border-top: 1px solid var(--grid-line);
+    border-bottom: 1px solid var(--grid-line);
+  }
+  .sobre-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+  }
+  @media (max-width: 880px) { .sobre-grid { grid-template-columns: 1fr; } }
+  .sobre-card {
+    padding: 28px;
+  }
+  .sobre-card .role {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--blueprint);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .sobre-card h3 {
+    font-size: 24px;
+    margin: 10px 0 4px;
+  }
+  .stack-tags {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    border: 1px solid var(--grid-line);
+    color: var(--ink-soft);
+    padding: 6px 13px;
+    border-radius: var(--r-pill);
+    transition: transform .3s var(--ease), background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+    display: inline-block;
+  }
+  .tag:hover { transform: translateY(-2px); background: var(--blueprint-deep); color: var(--paper-alt); border-color: var(--blueprint-deep); }
+  .sobre-text p { margin-bottom: 16px; color: var(--ink-soft); font-size: 15.5px; }
+  .sobre-text strong { color: var(--blueprint-deep); }
+
+  .credential-list { margin-top: 26px; display: grid; gap: 12px; }
+  .credential-item {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    align-items: baseline;
+    border-top: 1px dashed var(--grid-line);
+    padding-top: 12px;
+  }
+  .credential-item .yr { font-family: var(--font-mono); color: var(--blueprint); font-size: 12px; min-width: 74px; }
+
+  /* ---------- PROJETOS ---------- */
+  .projects-list { display: grid; gap: 26px; }
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 0;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 26px 50px rgba(28, 20, 13, 0.18);
+  }
+  @media (max-width: 800px) { .project-card { grid-template-columns: 1fr; } }
+  .project-mock {
+    background: var(--blueprint-deep);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .browser-frame {
+    background: var(--paper-alt);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    box-shadow: 0 10px 26px rgba(0,0,0,.28);
+    transition: transform .5s var(--ease);
+  }
+  .project-card:hover .browser-frame { transform: scale(1.03); }
+  .browser-bar {
+    background: #EDE4D2;
+    padding: 7px 10px;
+    display: flex;
+    gap: 5px;
+  }
+  .browser-bar span { width: 7px; height: 7px; border-radius: 50%; background: #B8AF97; }
+  .browser-body { padding: 16px; }
+  .mock-block { height: 10px; background: var(--grid-line); border-radius: var(--r-pill); margin-bottom: 8px; }
+  .mock-block.w60 { width: 60%; }
+  .mock-block.w40 { width: 40%; }
+  .mock-hero { height: 56px; border-radius: var(--r-sm); margin-bottom: 12px; }
+  .mock-logo {
+    height: 108px;
+    border-radius: var(--r-sm);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .mock-logo img { max-height: 100%; max-width: 78%; object-fit: contain; }
+  .mock-logo.cover img { max-width: 100%; height: 100%; object-fit: cover; }
+  .mock-row { display: flex; gap: 8px; margin-top: 10px; }
+  .mock-row > div { flex: 1; height: 34px; border-radius: var(--r-sm); background: var(--grid-line); }
+
+  .project-info {
+    background: var(--paper-alt);
+    padding: 32px;
+  }
+  .project-info .ptag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--signal-deep);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .project-info h3 { font-size: 22px; margin: 8px 0 10px; }
+  .project-info p { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 16px; }
+  .project-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border-top: 1px solid var(--grid-line);
+    padding-top: 14px;
+  }
+  .project-specs div span { display: block; color: var(--ink-soft); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px;}
+
+  /* ---------- PROCESSO ---------- */
+  .processo { background: var(--blueprint-deep); color: var(--paper-alt); }
+  .processo .eyebrow { color: var(--blueprint-light); }
+  .processo .eyebrow::before { background: var(--signal); }
+  .processo h2 { color: var(--paper-alt); }
+  .processo .section-head p { color: #BFCE9C; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 880px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-md);
+    padding: 26px 22px;
+    transition: transform .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+  }
+  .step:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,.08);
+    border-color: var(--signal);
+  }
+  .step .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--signal);
+    transition: transform .4s var(--ease);
+  }
+  .step:hover .num { transform: scale(1.15); }
+  .step h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    margin: 10px 0 8px;
+    color: var(--paper-alt);
+  }
+  .step p { font-size: 13.5px; color: #BFCE9C; }
+
+  /* ---------- CONTATO ---------- */
+  .contato { background: var(--paper-alt); border-top: 1px solid var(--grid-line); }
+  .contato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 800px) { .contato-grid { grid-template-columns: 1fr; } }
+  .contact-rows { display: grid; gap: 0; margin-top: 20px; }
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--grid-line);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    border-radius: var(--r-sm);
+    transition: background .3s var(--ease), padding-left .3s var(--ease);
+  }
+  .contact-row:hover { background: rgba(28, 20, 13,0.05); padding-left: 10px; }
+  .contact-row .k { color: var(--ink-soft); }
+  .contact-row a { transition: color .3s var(--ease); }
+  .contact-row a:hover { color: var(--signal); }
+
+  .contact-form { display: grid; gap: 14px; }
+  .contact-form label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .contact-form input, .contact-form textarea {
+    width: 100%;
+    border: 1.5px solid var(--grid-line);
+    background: var(--paper);
+    padding: 13px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    border-radius: var(--r-sm);
+    transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .contact-form input:focus, .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--blueprint);
+    box-shadow: 0 0 0 4px rgba(28, 20, 13,0.12);
+  }
+  .contact-form textarea { resize: vertical; min-height: 100px; }
+
+  footer {
+    padding: 30px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ---------- PROBLEMAS ---------- */
+  .problemas { background: var(--paper-alt); border-top: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); }
+  .problemas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 40px;
+  }
+  @media (max-width: 700px) { .problemas-grid { grid-template-columns: 1fr; } }
+  .problema-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 12px;
+    border-bottom: 1px dashed var(--grid-line);
+    font-size: 15px;
+    color: var(--ink-soft);
+    border-radius: var(--r-sm);
+    transition: background .3s var(--ease), transform .3s var(--ease), padding-left .3s var(--ease);
+  }
+  .problema-item:hover {
+    background: rgba(156, 184, 74, 0.06);
+    transform: translateX(4px);
+  }
+  .problema-item .mark {
+    font-family: var(--font-mono);
+    color: var(--signal);
+    font-size: 13px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    transition: transform .35s var(--ease);
+  }
+  .problema-item:hover .mark { transform: rotate(90deg) scale(1.2); }
+
+  /* ---------- SERVICOS ---------- */
+  .servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 880px) { .servicos-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .servicos-grid { grid-template-columns: 1fr; } }
+  .servico-card {
+    padding: 26px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .servico-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--signal), var(--blueprint-light));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .45s var(--ease);
+    border-radius: var(--r-pill);
+  }
+  .servico-card:hover::before { transform: scaleX(1); }
+  .servico-card .idx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--blueprint-light);
+    display: inline-block;
+    transition: transform .4s var(--ease);
+  }
+  .servico-card:hover .idx { transform: translateX(4px); color: var(--signal); }
+  .servico-card h3 {
+    font-size: 17px;
+    margin: 10px 0 8px;
+  }
+  .servico-card p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- CTA FINAL ---------- */
+  .cta-final {
+    background: var(--blueprint-deep);
+    color: var(--paper-alt);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-final::before, .cta-final::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .35;
+  }
+  .cta-final::before {
+    width: 340px; height: 340px;
+    background: var(--signal);
+    top: -140px; left: -80px;
+    animation: blob-float 12s ease-in-out infinite;
+  }
+  .cta-final::after {
+    width: 300px; height: 300px;
+    background: var(--blueprint-light);
+    bottom: -140px; right: -60px;
+    animation: blob-float 14s ease-in-out infinite reverse;
+  }
+  @keyframes blob-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, 20px) scale(1.1); }
+  }
+  .cta-final .wrap { position: relative; z-index: 1; }
+  .cta-final h2 {
+    color: var(--paper-alt);
+    font-size: clamp(26px, 4vw, 40px);
+    max-width: 620px;
+    margin: 0 auto 18px;
+  }
+  .cta-final p { color: #BFCE9C; max-width: 480px; margin: 0 auto 28px; font-size: 15.5px; }
+  .cta-final .btn-primary { box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-mark"><span class="dot"></span>GUSTAVO ARISTIDES</a>
+    <nav class="links nav-mobile-hide">
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#processo">Processo</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a href="#contato" class="nav-cta">Solicitar orçamento</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Desenvolvimento web · São Paulo</span>
+        <h1>Sites que colocam seu negócio<br><span class="accent">no ar de verdade.</span></h1>
+        <p class="lead">Sou o Gustavo — estudante de Análise e Desenvolvimento de Sistemas e desenvolvedor freelancer. Projeto e construo sites rápidos, bonitos e feitos pra vender, para pizzarias, clínicas e pequenos negócios de São Paulo.</p>
+        <div class="hero-actions">
+          <a href="#contato" class="btn btn-primary">Quero um site →</a>
+          <a href="#projetos" class="btn btn-ghost">Ver projetos entregues</a>
+        </div>
+        <div class="hero-meta">
+          <div><strong>3</strong>projetos reais em produção</div>
+          <div><strong>100%</strong>código próprio, sem templates prontos</div>
+          <div><strong>SP</strong>atendimento local, presencial se precisar</div>
+        </div>
+      </div>
+
+      <div class="blueprint-panel">
+        <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(91, 79, 65,0.18)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="420" height="380" fill="url(#grid)"/>
+          <!-- browser frame blueprint -->
+          <rect x="30" y="30" width="360" height="270" rx="16" fill="none" stroke="#93AC5C" stroke-width="1.4"/>
+          <line x1="30" y1="58" x2="390" y2="58" stroke="#93AC5C" stroke-width="1.2"/>
+          <circle cx="46" cy="44" r="3.5" fill="none" stroke="#93AC5C" stroke-width="1"/>
+          <circle cx="58" cy="44" r="3.5" fill="none" stroke="#93AC5C" stroke-width="1"/>
+          <circle cx="70" cy="44" r="3.5" fill="none" stroke="#93AC5C" stroke-width="1"/>
+          <!-- hero block -->
+          <rect x="50" y="74" width="340" height="60" rx="14" fill="none" stroke="#CBE86B" stroke-width="1.4" stroke-dasharray="4 3">
+            <animate attributeName="stroke-dashoffset" from="0" to="14" dur="1.4s" repeatCount="indefinite"/>
+          </rect>
+          <text x="50" y="70" class="blueprint-label">HERO — 340×60</text>
+          <!-- text lines -->
+          <rect x="50" y="150" width="220" height="8" rx="4" fill="#93AC5C" opacity=".5"/>
+          <rect x="50" y="166" width="160" height="8" rx="4" fill="#93AC5C" opacity=".35"/>
+          <!-- cards -->
+          <rect x="50" y="196" width="100" height="80" rx="12" fill="none" stroke="#93AC5C" stroke-width="1.2"/>
+          <rect x="160" y="196" width="100" height="80" rx="12" fill="none" stroke="#93AC5C" stroke-width="1.2"/>
+          <rect x="270" y="196" width="100" height="80" rx="12" fill="none" stroke="#93AC5C" stroke-width="1.2"/>
+          <text x="50" y="192" class="blueprint-label">SEÇÕES 01–03</text>
+          <!-- dimension lines -->
+          <path d="M 30 316 Q 210 326 390 316" fill="none" stroke="#93AC5C" stroke-width="1"/>
+          <circle cx="30" cy="316" r="2.5" fill="#93AC5C"/>
+          <circle cx="390" cy="316" r="2.5" fill="#93AC5C"/>
+          <text x="190" y="340" class="blueprint-label">100% RESPONSIVO</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMAS -->
+  <section class="problemas">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Problemas que eu resolvo</span>
+        <h2>Se o seu negócio se encaixa em algum ponto abaixo, é aí que eu entro.</h2>
+      </div>
+      <div class="problemas-grid">
+        <div class="problema-item"><span class="mark">✕</span>Seu negócio não aparece quando alguém pesquisa no Google ou Maps.</div>
+        <div class="problema-item"><span class="mark">✕</span>Você depende só de rede social e perde cliente que nem sabia que você existia.</div>
+        <div class="problema-item"><span class="mark">✕</span>Seu cardápio ou catálogo só existe em foto solta no WhatsApp.</div>
+        <div class="problema-item"><span class="mark">✕</span>Não tem um lugar único pra mandar o cliente ver endereço, horário e contato.</div>
+        <div class="problema-item"><span class="mark">✕</span>O site que você tem é antigo, lento ou quebra no celular.</div>
+        <div class="problema-item"><span class="mark">✕</span>Ninguém cuida da presença digital do seu negócio no dia a dia.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICOS -->
+  <section id="servicos">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">O que eu faço</span>
+        <h2>Serviços dentro do que eu realmente entrego bem.</h2>
+        <p>Sem prometer o que não sei fazer — cada item abaixo é algo que já apliquei em projeto real ou em curso técnico concluído.</p>
+      </div>
+      <div class="servicos-grid">
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">01</span>
+          <h3>Sites institucionais</h3>
+          <p>Presença digital completa pro seu negócio, com estrutura pensada pra apresentar quem você é e converter visita em contato.</p>
+        </div>
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">02</span>
+          <h3>Landing pages</h3>
+          <p>Página única, focada em um objetivo específico — vender um serviço, captar agendamento ou apresentar uma promoção.</p>
+        </div>
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">03</span>
+          <h3>Sites one-page</h3>
+          <p>Cardápio, portfólio ou apresentação enxuta — direto ao ponto, no ar rápido e sem custo desnecessário.</p>
+        </div>
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">04</span>
+          <h3>Apoio com divulgação</h3>
+          <p>Organização de conteúdo e presença digital do seu negócio — como fiz no projeto da Pracinha Pizzaria.</p>
+        </div>
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">05</span>
+          <h3>Manutenção e ajustes</h3>
+          <p>Atualização de textos, fotos e informações do site depois que ele já está no ar — sem custo escondido.</p>
+        </div>
+        <div class="sheet servico-card">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="idx">06</span>
+          <h3>Consultoria de presença digital</h3>
+          <p>Uma conversa honesta sobre o que realmente vale a pena pro seu negócio hoje — sem empurrar serviço que você não precisa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="sobre" id="sobre">
+    <div class="wrap sobre-grid">
+      <div class="sheet sobre-card">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="role">Ficha técnica</span>
+        <h3>Gustavo Aristides de Souza</h3>
+        <div class="credential-list">
+          <div class="credential-item"><span class="yr">2026–28</span> Análise e Desenvolvimento de Sistemas — SENAC</div>
+          <div class="credential-item"><span class="yr">2026</span> Fundamentos de Python — Cisco Networking Academy</div>
+          <div class="credential-item"><span class="yr">2022–23</span> Desenvolvimento Web, Marketing Digital, Design Gráfico e Administração — SENAI</div>
+          <div class="credential-item"><span class="yr">2024–26</span> Auxiliar Administrativo — Transwolff Transportes</div>
+        </div>
+        <div class="stack-tags">
+          <span class="tag">HTML5</span>
+          <span class="tag">CSS3</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Python</span>
+          <span class="tag">Git / GitHub</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">Photoshop</span>
+          <span class="tag">CorelDRAW</span>
+        </div>
+      </div>
+
+      <div class="sobre-text">
+        <span class="eyebrow">Sobre o trabalho</span>
+        <h2>Programação não é só profissão — é o que eu escolho fazer nas horas livres.</h2>
+        <p>Comecei mexendo com design e informática ainda no SENAI, e hoje curso ADS enquanto construo sites reais para negócios de São Paulo. Não vendo promessa vazia de "site profissional": mostro o que já entreguei, como a <strong>Pracinha Pizzaria e Restaurante</strong>, em Parelheiros — do zero ao ar, com divulgação inclusa.</p>
+        <p>Trabalho sozinho, direto com o dono do negócio — sem intermediário, sem contrato genérico de agência. Cada site é <strong>código próprio</strong>, pensado pro público real daquele bairro, daquele cardápio, daquela clínica.</p>
+        <p>Se você tem um negócio pequeno e sabe que precisa estar na internet, mas não sabe por onde começar — é exatamente esse o cliente que eu atendo melhor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Projetos entregues e em andamento</span>
+        <h2>Sites reais, para negócios reais.</h2>
+        <p>Cada projeto abaixo é uma planta desenhada sob medida — nada de template genérico reaproveitado.</p>
+      </div>
+
+      <div class="projects-list">
+
+        <article class="project-card">
+          <div class="project-mock">
+            <div class="browser-frame">
+              <div class="browser-bar"><span></span><span></span><span></span></div>
+              <div class="browser-body">
+                <div class="mock-hero" style="background:linear-gradient(120deg,#9CB84A,#CBE86B);"></div>
+                <div class="mock-block w60"></div>
+                <div class="mock-block w40"></div>
+                <div class="mock-row"><div></div><div></div><div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <span class="ptag">Site + divulgação</span>
+            <h3>Pracinha Pizzaria e Restaurante</h3>
+            <p>Site institucional e estratégia de divulgação para pizzaria e restaurante em Parelheiros, São Paulo — foco em apresentar o cardápio e atrair clientes do bairro.</p>
+            <div class="project-specs">
+              <div><span>Local</span>Parelheiros, SP</div>
+              <div><span>Stack</span>HTML · CSS · JS</div>
+              <div><span>Escopo</span>Site + divulgação</div>
+              <div><span>Status</span>Em andamento</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-mock">
+            <div class="browser-frame">
+              <div class="browser-bar"><span></span><span></span><span></span></div>
+              <div class="browser-body">
+                <div class="mock-hero" style="background:linear-gradient(135deg,#1C140D,#93AC5C);"></div>
+                <div class="mock-block w60"></div>
+                <div class="mock-block w40"></div>
+                <div class="mock-row"><div></div><div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <span class="ptag">Landing page premium</span>
+            <h3>Odonto Dias</h3>
+            <p>Landing page premium para clínica odontológica em Parelheiros, com foco em transmitir confiança e converter visitantes em agendamentos.</p>
+            <div class="project-specs">
+              <div><span>Local</span>Parelheiros, SP</div>
+              <div><span>Stack</span>HTML · CSS · JS</div>
+              <div><span>Escopo</span>Landing page</div>
+              <div><span>Status</span>Em andamento</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-mock">
+            <div class="browser-frame">
+              <div class="browser-bar"><span></span><span></span><span></span></div>
+              <div class="browser-body">
+                <div class="mock-hero" style="background:linear-gradient(150deg,#556B1D,#CBE86B);"></div>
+                <div class="mock-block w60"></div>
+                <div class="mock-block w40"></div>
+                <div class="mock-row"><div></div><div></div><div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <span class="ptag">Site de página única</span>
+            <h3>Bella Pizza</h3>
+            <p>Site de página única para a Bella Pizza, no Parque Recreio, em São Paulo, no mesmo padrão visual usado no projeto da Pracinha Pizzaria.</p>
+            <div class="project-specs">
+              <div><span>Local</span>Parque Recreio, SP</div>
+              <div><span>Stack</span>HTML · CSS · JS</div>
+              <div><span>Escopo</span>One-page</div>
+              <div><span>Status</span>Em andamento</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESSO -->
+  <section class="processo" id="processo">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Como o projeto acontece</span>
+        <h2>Do briefing ao site no ar, em 4 etapas.</h2>
+        <p>Sem burocracia de agência grande. Você fala comigo diretamente do início ao fim.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01</span>
+          <h4>Entender o negócio</h4>
+          <p>Conversa sobre o que seu negócio vende, quem é seu cliente e o que o site precisa fazer por você.</p>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <h4>Planejar e desenhar</h4>
+          <p>Estrutura, cores e textos definidos antes de qualquer linha de código — sem retrabalho depois.</p>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <h4>Construir</h4>
+          <p>Código próprio, responsivo, rápido de carregar e pronto pra aparecer bem no Google.</p>
+        </div>
+        <div class="step">
+          <span class="num">04</span>
+          <h4>Publicar e acompanhar</h4>
+          <p>Site publicado, testado em celular e computador, com ajustes finos até você aprovar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <div class="wrap">
+      <h2>Vamos colocar seu negócio no ar.</h2>
+      <p>Me chama e conta como é o seu negócio hoje — eu te digo, sem enrolação, se e como consigo ajudar.</p>
+      <a href="#contato" class="btn btn-primary">Solicitar orçamento →</a>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="contato" id="contato">
+    <div class="wrap contato-grid">
+      <div>
+        <span class="eyebrow">Vamos conversar</span>
+        <h2 style="margin-top:14px; font-size: clamp(26px,3.4vw,36px);">Seu negócio merece um site à altura.</h2>
+        <p style="color:var(--ink-soft); margin-top:14px; font-size:15.5px; max-width:44ch;">Me chama, conta como é o seu negócio e eu te falo, sem enrolação, se e como consigo ajudar.</p>
+        <div class="contact-rows">
+          <div class="contact-row"><span class="k">E-mail</span><a href="mailto:aristidesgustavo844@gmail.com">aristidesgustavo844@gmail.com</a></div>
+          <div class="contact-row"><span class="k">WhatsApp</span><a href="https://wa.me/5511962950427" target="_blank" rel="noopener">(11) 96295-0427</a></div>
+          <div class="contact-row"><span class="k">Base</span><span>São Paulo, SP</span></div>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contact-form">
+        <div>
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" required placeholder="Seu nome">
+        </div>
+        <div>
+          <label for="negocio">Nome do negócio</label>
+          <input id="negocio" name="negocio" type="text" placeholder="Ex: Pizzaria do bairro">
+        </div>
+        <div>
+          <label for="msg">O que você precisa</label>
+          <textarea id="msg" name="msg" required placeholder="Conta um pouco sobre o seu negócio e o que você espera do site"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="justify-self:start;">Enviar mensagem →</button>
+        <p class="form-status" style="font-family:var(--font-mono); font-size:12.5px; color:var(--ok);"></p>
+      </form>
+      <p style="font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft); margin-top:10px;">Ao enviar, o WhatsApp abre com a mensagem já pronta para o número (11) 96295-0427.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; width:100%;">
+    <span>© 2026 Gustavo Aristides de Souza</span>
+    <span>São Paulo, SP — Brasil</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- Fundo animado: rede de pontos "vivos" estilo blueprint/circuito ----------
+  (function initBackground() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let w, h, dpr;
+    let points = [];
+    let mouse = { x: -9999, y: -9999, active: false };
+
+    const COLORS = {
+      line: 'rgba(91, 79, 65, OPACITY)',
+      dot: 'rgba(28, 20, 13, OPACITY)',
+      signal: 'rgba(156, 184, 74, OPACITY)'
+    };
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const density = Math.min(90, Math.floor((w * h) / 18000));
+      points = Array.from({ length: density }, () => makePoint());
+    }
+
+    function makePoint() {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        r: Math.random() * 1.6 + 1,
+        signal: Math.random() < 0.08,
+        pulse: Math.random() * Math.PI * 2
+      };
+    }
+
+    function step() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (const p of points) {
+        // drift
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += 0.02;
+
+        // gentle attraction toward cursor within radius
+        if (mouse.active) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 160 && dist > 0.1) {
+            const force = (1 - dist / 160) * 0.03;
+            p.vx += (dx / dist) * force;
+            p.vy += (dy / dist) * force;
+          }
+        }
+
+        // damping so it never runs away
+        p.vx *= 0.985;
+        p.vy *= 0.985;
+
+        // wrap edges
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
+      }
+
+      // connective lines between near points
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const a = points[i], b = points[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130) {
+            const op = (1 - dist / 130) * 0.16;
+            ctx.strokeStyle = COLORS.line.replace('OPACITY', op.toFixed(3));
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // points
+      for (const p of points) {
+        const glow = p.signal ? (Math.sin(p.pulse) * 0.3 + 0.55) : 0.4;
+        ctx.fillStyle = p.signal
+          ? COLORS.signal.replace('OPACITY', glow.toFixed(3))
+          : COLORS.dot.replace('OPACITY', glow.toFixed(3));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.signal ? p.r + 0.8 : p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      if (!reduceMotion) requestAnimationFrame(step);
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    });
+    window.addEventListener('mouseleave', () => { mouse.active = false; });
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        mouse.active = true;
+      }
+    }, { passive: true });
+
+    resize();
+    if (reduceMotion) {
+      step(); // draw one static frame, no animation loop
+    } else {
+      requestAnimationFrame(step);
+    }
+  })();
+
+  // ---------- Formulário de contato -> WhatsApp ----------
+  (function initContactForm() {
+    const WHATSAPP_NUMBER = '5511962950427'; // (11) 96295-0427, com código do país
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const nome = form.nome.value.trim();
+      const negocio = form.negocio.value.trim();
+      const msg = form.msg.value.trim();
+      const status = form.querySelector('.form-status');
+
+      if (!nome || !msg) {
+        status.style.color = '#B3452E';
+        status.textContent = 'Preenche pelo menos o nome e o que você precisa.';
+        return;
+      }
+
+      const linhas = [
+        'Olá! Vim pelo site e gostaria de solicitar um orçamento.',
+        '',
+        'Nome: ' + nome,
+        'Negócio: ' + (negocio || 'não informado'),
+        'O que preciso: ' + msg
+      ];
+      const texto = encodeURIComponent(linhas.join('\n'));
+      const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + texto;
+
+      status.style.color = 'var(--ok)';
+      status.textContent = 'Abrindo o WhatsApp com sua mensagem pronta...';
+
+      window.open(url, '_blank', 'noopener');
+      form.reset();
+    });
+  })();
+
+  const revealEls = document.querySelectorAll('.sheet, .project-card, .step, .sobre-text, .problema-item, .servico-card');
+  revealEls.forEach(el => el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
